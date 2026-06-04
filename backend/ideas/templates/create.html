@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/create.css' %}">
+<link rel="stylesheet" href="{% static 'css/forum.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>NEW REQUEST</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <input name="title" placeholder="Title"><br><br>
+    <textarea name="description" placeholder="Description"></textarea><br><br>
+    <button type="submit">ADD</button>
+</form>
+
+{% endblock %}

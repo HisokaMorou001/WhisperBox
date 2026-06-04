@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/forum.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>FORUM REQUESTS</h1>
+
+{% for idea in ideas %}
+    <div class="card {% if idea.status == 'approved' %}approved{% elif idea.status == 'rejected' %}rejected{% endif %}">
+
+        <div class="card-content">
+            <h3>{{ idea.title }}</h3>
+            <p>{{ idea.description }}</p>
+
+            <small>
+                Created: {{ idea.created_at|date:"d/m/Y H:i" }}
+            </small>
+
+            {% if idea.approved_at %}
+                <small>| Approved: {{ idea.approved_at|date:"d/m/Y H:i" }}</small>
+            {% endif %}
+
+            {% if idea.rejected_at %}
+                <small>| Rejected: {{ idea.rejected_at|date:"d/m/Y H:i" }}</small>
+            {% endif %}
+        </div>
+
+        {% if user.is_superuser %}
+            <div class="admin-actions">
+                <button class="btn-approve"
+                        onclick="location.href='{% url 'set_status' idea.id 'approved' %}'">
+                    APPROVE
+                </button>
+
+                <button class="btn-reject"
+                        onclick="location.href='{% url 'set_status' idea.id 'rejected' %}'">
+                    DECLINE
+                </button>
+            </div>
+        {% endif %}
+
+    </div>
+{% empty %}
+    <p>No requests yet.</p>
+{% endfor %}
+
+{% endblock %}

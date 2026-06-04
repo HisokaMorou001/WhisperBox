@@ -1,0 +1,33 @@
+input,
+textarea,
+button {
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+/* INPUT TITOLO */
+form input[name="title"] {
+    width: 898px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* TEXTAREA DESCRIZIONE */
+form textarea[name="description"] {
+    width: 900px;
+    height: 200px;
+    padding: 12px;
+    font-size: 16px;
+    resize: none;
+}
+
+/* BOTTONE */
+form button {
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+}

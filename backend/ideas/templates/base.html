@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Whisper Box</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block css %}{% endblock %}
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>Whisper Box</h2>
+
+        {% if user.is_authenticated %}
+
+            <div class="user-box">
+                <img class="user-avatar" src="{% static 'img/avatar.png' %}" alt="avatar">
+                <p>{{ user.username }}</p>
+            </div>
+
+            <div class="menu">
+                <a href="{% url 'home' %}">FORUM</a>
+
+                {% if user.is_superuser %}
+                    <a href="/admin/">ADMIN DJANGO</a>
+                {% else %}
+                    <a href="{% url 'create' %}">NEW REQUEST</a>
+                {% endif %}
+            </div>
+
+            <div class="logout">
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">LOGOUT</button>
+                </form>
+            </div>
+
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

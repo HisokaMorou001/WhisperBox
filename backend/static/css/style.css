@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Papirus;
+    background: hsl(68, 84%, 50%);
+}
+
+/* BOX LOGIN */
+.login-box {
+    padding: 30px;
+    background: rgb(29, 29, 29);
+    color:hsl(68, 84%, 50%);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 320px;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* TITOLO */
+.login-box h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* FORM */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* INPUT */
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* BUTTON */
+button {
+    width: 90%;
+    padding: 10px;
+    background: hsl(68, 84%, 50%);
+    font-weight: bold;
+    color: rgb(29, 29, 29);
+    border: none;
+    cursor: pointer;
+    margin-top: 25px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: hsl(68, 93%, 54%);
+    transform: scale(1.05);
+}
+
+p {
+    text-align: center;
+}
