@@ -16,7 +16,7 @@
         {% if user.is_authenticated %}
 
             <div class="user-box">
-                <img class="user-avatar" src="{% static 'img/avatar.png' %}" alt="avatar">
+                <img class="user-avatar" src="{% static 'img/lotrek.png' %}" alt="avatar">
                 <p>{{ user.username }}</p>
             </div>
 
@@ -41,6 +41,7 @@
             <a href="{% url 'login' %}">Login</a>
         {% endif %}
     </div>
+        <h5>MADE BY ZANI DIEGO</h5>
 
     <div class="content">
         {% block content %}

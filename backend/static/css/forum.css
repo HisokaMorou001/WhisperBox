@@ -100,6 +100,7 @@ body {
 /* CARD BASE */
 .card {
     background: white;
+    font-weight: bold;
     color:#000;
     padding: 15px;
     border-radius: 8px;
@@ -111,14 +112,17 @@ body {
 
 /* CARD APPROVATA */
 .card.approved {
-    background: #d4f8d4;
-    border-left: 5px solid #2ecc71;
+    background: hsl(68, 84%, 50%);
+    font-weight: bold;
+    border-left: 5px solid hsl(68, 100%, 33%);
 }
 
 /* CARD RIFIUTATA */
 .card.rejected {
-    background: #ffd6d6;
-    border-left: 5px solid #e74c3c;
+    color:#fff;
+    font-weight: bold;
+    background: rgb(49, 49, 49);
+    border-left: 5px solid hsl(0, 0%, 100%); 
 }
 
 /* USER BOX */
@@ -133,6 +137,8 @@ body {
 
 /* AVATAR */
 .sidebar .user-avatar {
+    position:absolute;
+    top: -30px;
     width: 140px;
     height: 140px;
     border-radius: 50%;
@@ -152,13 +158,27 @@ body {
 }
 
 /* BOTTONI NEUTRI */
-.btn-approve,
+.btn-approve {
+    font-family: Arial, sans-serif;
+    border: 2px solid rgb(49, 49, 49);
+    background: hsl(68, 84%, 50%);
+    color: #000;
+    font-weight: bold;
+    width: 100px;        
+    padding: 8px 0;        
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+
+    text-align: center;
+
+}
 .btn-reject {
     font-family: Arial, sans-serif;
-    border: 1px solid #000;
-    background: #fff;
-    color: #000;
-
+    border: 2px solid hsl(68, 84%, 50%);
+    background: rgb(49, 49, 49);
+    color: #ffffff;
+    font-weight: bold;
     width: 100px;        
     padding: 8px 0;        
     border-radius: 6px;
@@ -168,8 +188,21 @@ body {
     text-align: center;
 }
 
+.card:not(.approved):not(.rejected) .btn-approve,
+.card:not(.approved):not(.rejected) .btn-reject {
+    border: 2px solid #000;
+}
+
 /* HOVER BOTTONI ADMIN */
 .btn-approve:hover,
 .btn-reject:hover {
-    background: #eee;
+    transform: scale(1.05);
+}
+
+h5{
+    position:absolute;
+    bottom: -8px;
+    left: 70px;
+    color:rgb(40, 40, 40);
+    font-family: Papirus;
 }
