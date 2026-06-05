@@ -5,10 +5,11 @@
 <head>
     <title>Whisper Box</title>
 
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
     {% block css %}{% endblock %}
 </head>
 
+    {% block js %}{% endblock %}
 <body>
     <div class="sidebar">
         <h2>Whisper Box</h2>
@@ -34,6 +35,7 @@
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
                     <button type="submit">LOGOUT</button>
+                    <h5>MADE BY ZANI DIEGO</h5>
                 </form>
             </div>
 
@@ -41,7 +43,6 @@
             <a href="{% url 'login' %}">Login</a>
         {% endif %}
     </div>
-        <h5>MADE BY ZANI DIEGO</h5>
 
     <div class="content">
         {% block content %}

@@ -3,206 +3,233 @@ body {
     font-family: Papirus;
     display: flex;
     height: 100vh;
-    color:#fff;
+    color: #fff;
     background: rgb(29, 29, 29);
 }
 
-/* SIDEBAR */
 .sidebar {
-    width: 240px;
+    width: clamp(220px, 23vw, 380px);
+    height: 100vh;
     background: hsl(68, 84%, 50%);
     color: rgb(29, 29, 29);
+    display: flex;
+    flex-direction: column;
+    padding: clamp(12px, 2vw, 24px);
+    box-sizing: border-box;
+}
 
+.sidebar h2 {
+    margin: 0 0 1.5rem 0;
+    font-size: clamp(1.4rem, 2.5vw, 2.5rem);
+    margin: 0 0 clamp(4.5rem, 6vw, 5.5rem) 0;
+    text-align: center;
+}
+
+.user-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    padding: 20px;
-    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
 }
 
-/* TITOLO */
-.sidebar h2 {
-    font-family: Papirus;
-    font-size: 35px;
-    margin: 0 0 30px 0;
+.user-avatar {
+    width: clamp(80px, 10vw, 140px);
+    height: clamp(80px, 10vw, 140px);
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-/* USERNAME */
-.sidebar p {
-    position: absolute;
-    top: 140px;
+.user-box p {
     margin: 0;
     font-weight: bold;
-    font-size: 26px;
+    font-size: clamp(16px, 1.8vw, 26px);
     text-align: center;
 }
 
-/* MENU */
-.sidebar .menu {
-    position: absolute;
-    top: 320px;
+.menu {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 1rem;
+    width: 100%;
 }
 
-/* BOTTONI BASE */
-.sidebar a,
-.sidebar button {
+.menu a,
+.menu button {
+    width: clamp(180px, 18vw, 220px);
+    padding: clamp(10px, 1.2vw, 16px);
     font-family: Arial, sans-serif;
     font-weight: bold;
-    width: 200px;
+    font-size: clamp(12px, 1.2vw, 16px);
     color: hsl(68, 84%, 50%);
-    text-decoration: none;
     background: rgb(29, 29, 29);
-    padding: 16px;
     border-radius: 6px;
-    cursor: pointer;
-    border:#000 1px solid;
+    border: 1px solid #000;
     text-align: center;
-    font-size: 16px;
-
-    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
     transition: transform 0.15s ease, background 0.15s ease;
 }
 
-/* HOVER SIDEBAR BUTTONS */
-.sidebar a:hover,
-.sidebar button:hover {
+.menu a:hover,
+.menu button:hover {
     transform: scale(1.05);
     background: rgb(40, 40, 40);
-    color:hsl(68, 100%, 57%);
+    color: hsl(68, 100%, 57%);
 }
 
-/* LOGOUT */
-.sidebar .logout {
+.logout {
     margin-top: auto;
-    padding-bottom: 20px;
-    width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: clamp(0.5rem, 2vw, 1.5rem);
+    gap: clamp(0.8rem, 2vw, 1.5rem);
 }
 
-.sidebar .logout button {
-    width: 200px;
-    display: block;
-}
-
-/* CONTENUTO */
-.content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-/* CARD BASE */
-.card {
-    background: white;
-    font-weight: bold;
-    color:#000;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border-left: 5px solid #b8b8b8;
-
-    position: relative;
-}
-
-/* CARD APPROVATA */
-.card.approved {
-    background: hsl(68, 84%, 50%);
-    font-weight: bold;
-    border-left: 5px solid hsl(68, 100%, 33%);
-}
-
-/* CARD RIFIUTATA */
-.card.rejected {
-    color:#fff;
-    font-weight: bold;
-    background: rgb(49, 49, 49);
-    border-left: 5px solid hsl(0, 0%, 100%); 
-}
-
-/* USER BOX */
-.sidebar .user-box {
-    font-family: Arial, sans-serif;
-    position: absolute;
-    top: 130px;
+.logout form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* AVATAR */
-.sidebar .user-avatar {
-    position:absolute;
-    top: -30px;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
+.logout button {
+    width: clamp(180px, 18vw, 220px);
+    padding: clamp(10px, 1.2vw, 16px);
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: clamp(12px, 1.2vw, 16px);
+    color: hsl(68, 84%, 50%);
+    background: rgb(29, 29, 29);
+    border-radius: 6px;
+    border: 1px solid #000;
+    cursor: pointer;
 }
 
-/* ADMIN ACTIONS */
-.admin-actions {
+.logout h5 {
+    margin: 0;
+    margin-top: clamp(0.5rem, 1.5vw, 1.2rem);
+    font-size: clamp(10px, 1vw, 14px);
+    text-align: center;
+    color: rgb(40, 40, 40);
+}
+
+.content {
+    flex: 1;
+    padding: clamp(10px, 2vw, 20px);
+    overflow-y: auto;
+}
+
+.card {
+    background: white;
+    font-weight: bold;
+    color: #000;
+
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+
+    border-left: 5px solid #b8b8b8;
+    position: relative;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+.card.approved {
+    background: hsl(68, 84%, 50%);
+    border-left: 5px solid hsl(68, 100%, 33%);
+}
+
+.card.rejected {
+    color: #fff;
+    background: rgb(49, 49, 49);
+    border-left: 5px solid #fff;
+}
+
+.btn-comment {
     position: absolute;
     right: 15px;
     bottom: 8px;
 
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-}
-
-/* BOTTONI NEUTRI */
-.btn-approve {
     font-family: Arial, sans-serif;
     border: 2px solid rgb(49, 49, 49);
-    background: hsl(68, 84%, 50%);
-    color: #000;
+
+    background: #fff;
+    color: hsl(68, 100%, 33%);
+
     font-weight: bold;
-    width: 100px;        
-    padding: 8px 0;        
+    width: 100px;
+    padding: 8px 0;
+
     border-radius: 6px;
     font-size: 14px;
     cursor: pointer;
-
-    text-align: center;
-
-}
-.btn-reject {
-    font-family: Arial, sans-serif;
-    border: 2px solid hsl(68, 84%, 50%);
-    background: rgb(49, 49, 49);
-    color: #ffffff;
-    font-weight: bold;
-    width: 100px;        
-    padding: 8px 0;        
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-
     text-align: center;
 }
 
-.card:not(.approved):not(.rejected) .btn-approve,
-.card:not(.approved):not(.rejected) .btn-reject {
-    border: 2px solid #000;
-}
-
-/* HOVER BOTTONI ADMIN */
-.btn-approve:hover,
-.btn-reject:hover {
+.btn-comment:hover {
     transform: scale(1.05);
 }
 
-h5{
-    position:absolute;
-    bottom: -8px;
-    left: 70px;
-    color:rgb(40, 40, 40);
-    font-family: Papirus;
+.comments-container {
+    margin-top: 15px;
+    padding: 10px;
+    border-top: 2px solid rgba(0, 0, 0, 0.24);
+}
+
+.comments-list {
+    margin-bottom: 32px;
+}
+
+.comment {
+    color: white;
+    width: 61.8%;
+
+    padding: 6px;
+    margin-bottom: 5px;
+
+    background: rgba(0, 0, 0, 0.24);
+    border-radius: 5px;
+
+    border-left: 3px solid #fff;
+    font-size: 14px;
+}
+
+.comment-input-box {
+    position: absolute;
+    bottom: 8px;
+    width: 60%;
+    display: flex;
+    gap: 10px;
+}
+
+.comment-input-box input {
+    flex: 1;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #999;
+}
+
+.comment-input-box button {
+    width: 100px;
+    padding: 8px 0;
+
+    font-family: Arial, sans-serif;
+    border: 2px solid rgb(49, 49, 49);
+
+    background: hsl(68, 84%, 50%);
+    color: #000;
+
+    font-weight: bold;
+    border-radius: 6px;
+
+    font-size: 14px;
+    cursor: pointer;
 }

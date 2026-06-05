@@ -29,23 +29,36 @@
             {% endif %}
         </div>
 
-        {% if user.is_superuser %}
-            <div class="admin-actions">
-                <button class="btn-approve"
-                        onclick="location.href='{% url 'set_status' idea.id 'approved' %}'">
-                    APPROVE
-                </button>
+        <!-- BOTTONE COMMENTI (TUTTI GLI UTENTI) -->
+        <button class="btn-comment"
+                onclick="toggleComments({{ idea.id }})">
+            COMMENTS
+        </button>
 
-                <button class="btn-reject"
-                        onclick="location.href='{% url 'set_status' idea.id 'rejected' %}'">
-                    DECLINE
+        <!-- CONTAINER COMMENTI -->
+        <div id="comments-{{ idea.id }}" class="comments-container" style="display:none;">
+            
+            <div class="comments-list" id="list-{{ idea.id }}"></div>
+
+            <div class="comment-input-box">
+                <input id="commento" type="text"
+                       id="input-{{ idea.id }}"
+                       placeholder="Write a comment...">
+
+                <button onclick="addComment({{ idea.id }})">
+                    SEND
                 </button>
             </div>
-        {% endif %}
+
+        </div>
 
     </div>
 {% empty %}
     <p>No requests yet.</p>
 {% endfor %}
 
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/comments.js' %}"></script>
 {% endblock %}

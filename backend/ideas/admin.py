@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils import timezone
 from .models import Idea
+from .models import Comment
 
 
 @admin.action(description="Approve selected ideas")
@@ -28,3 +29,9 @@ class IdeaAdmin(admin.ModelAdmin):
     search_fields = ("title", "description")
 
     actions = [approve_ideas, reject_ideas]
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("id", "user", "idea", "text", "created_at")
+    search_fields = ("text", "user__username", "idea__title")
+    list_filter = ("created_at", "idea")
