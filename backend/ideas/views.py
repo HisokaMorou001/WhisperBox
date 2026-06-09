@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 
-from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
-from django.views.decorators.csrf import csrf_exempt
-import json
-from django.views.decorators.http import require_POST
+# Import per DRF
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Idea, Comment
-
+from .serializer import CommentSerializer
 
 @login_required
 def home(request):
@@ -26,7 +26,6 @@ def create(request):
             description=request.POST['description']
         )
         return redirect('home')
-
     return render(request, 'create.html')
 
 
@@ -36,10 +35,10 @@ def is_superuser(user):
 
 @login_required
 @user_passes_test(is_superuser)
-def set_status(request, idea_id, status):
+def set_status(request, idea_id, status_type):
     idea = get_object_or_404(Idea, id=idea_id)
 
-    if status == "approved":
+    if status_type == "approved":
         if idea.status == "approved":
             idea.status = "pending"
             idea.approved_at = None
@@ -48,7 +47,7 @@ def set_status(request, idea_id, status):
             idea.approved_at = timezone.now()
             idea.rejected_at = None
 
-    elif status == "rejected":
+    elif status_type == "rejected":
         if idea.status == "rejected":
             idea.status = "pending"
             idea.rejected_at = None
@@ -60,53 +59,26 @@ def set_status(request, idea_id, status):
     idea.save()
     return redirect('home')
 
-@login_required
-def get_comments(request, idea_id):
-    idea = get_object_or_404(Idea, id=idea_id)
+class CommentListCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated] # Sostituisce @login_required
 
-    comments = Comment.objects.filter(idea=idea).order_by("-created_at")
+    def get(self, request, idea_id):
+        """Sostituisce get_comments"""
+        idea = get_object_or_404(Idea, id=idea_id)
+        comments = Comment.objects.filter(idea=idea).order_by("-created_at")
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
-    data = [
-        {
-            "id": c.id,
-            "text": c.text,
-            "created_at": c.created_at
-        }
-        for c in comments
-    ]
-
-    return JsonResponse(data, safe=False)
-
-
-@login_required
-@require_http_methods(["POST"])
-@csrf_exempt
-def add_comment(request, idea_id):
-    idea = get_object_or_404(Idea, id=idea_id)
-
-    # 1 solo commento per utente per idea
-    if Comment.objects.filter(idea=idea, user=request.user).exists():
-        return JsonResponse(
-            {"error": "Hai già commentato questa idea"},
-            status=400
-        )
-
-    try:
-        body = json.loads(request.body)
-        text = body.get("text", "")
-    except:
-        return JsonResponse({"error": "Dati non validi"}, status=400)
-
-    comment = Comment.objects.create(
-        idea=idea,
-        user=request.user,
-        text=text
-    )
-
-    return JsonResponse({
-        "id": comment.id,
-        "text": comment.text,
-        "created_at": comment.created_at
-    })
-
-    
+    def post(self, request, idea_id):
+        """Sostituisce add_comment"""
+        idea = get_object_or_404(Idea, id=idea_id)
+        
+        # Passiamo il contesto alla validazione del serializer
+        serializer = CommentSerializer(data=request.data, context={'request': request, 'view': self})
+        
+        if serializer.is_valid():
+            # Salviamo iniettando l'utente e l'idea correnti
+            serializer.save(user=request.user, idea=idea)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

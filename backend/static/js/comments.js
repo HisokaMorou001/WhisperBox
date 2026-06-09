@@ -31,14 +31,19 @@ async function loadComments(ideaId) {
 
         const data = await response.json();
 
-        console.log("Commenti ricevuti:", data);
-
         list.innerHTML = "";
 
         data.forEach(comment => {
             const div = document.createElement("div");
-            div.className = "comment";
-            div.textContent = comment.text;
+
+            div.className = comment.is_admin
+                ? "comment admin-comment"
+                : "comment";
+
+            div.innerHTML = comment.is_admin
+                ? `</strong>${comment.text}`
+                : `</strong> ${comment.text}`;
+
             list.appendChild(div);
         });
 
