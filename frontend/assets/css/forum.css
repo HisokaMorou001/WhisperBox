@@ -1,0 +1,265 @@
+body {
+    margin: 0;
+    font-family: Papirus;
+    color: #fff;
+    background: rgb(29, 29, 29);
+}
+
+.layout {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.sidebar {
+    width: clamp(220px, 23vw, 380px);
+    height: 100vh;
+    background: hsl(68, 84%, 50%);
+    color: rgb(29, 29, 29);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: clamp(12px, 2vw, 24px);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.sidebar h2 {
+    margin: 0 0 1.5rem 0;
+    font-size: clamp(1.4rem, 2.5vw, 2.5rem);
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.user{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-4%);
+    flex: 1;
+}
+
+.user-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
+}
+
+.user-avatar {
+    width: clamp(80px, 10vw, 140px);
+    height: clamp(80px, 10vw, 140px);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-box p {
+    margin: 0;
+    font-weight: bold;
+    font-size: clamp(16px, 1.8vw, 26px);
+    text-align: center;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.menu a,
+.menu button {
+    display: block;
+    box-sizing: border-box;
+    width: clamp(200px, 20vw, 240px);
+    padding: clamp(10px, 1.2vw, 16px);
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: clamp(12px, 1.2vw, 16px);
+    color: hsl(68, 84%, 50%);
+    background: rgb(29, 29, 29);
+    border-radius: 6px;
+    border: 1px solid #000;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.menu a:hover,
+.menu button:hover {
+    transform: scale(1.05);
+    background: rgb(40, 40, 40);
+    color: hsl(68, 100%, 57%);
+}
+
+#logout-button {
+    width: clamp(200px, 20vw, 240px);
+}
+
+.logout form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logout button {
+    width: clamp(200px, 20vw, 240px);
+    padding: clamp(10px, 1.2vw, 16px);
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: clamp(12px, 1.2vw, 16px);
+    color: hsl(68, 84%, 50%);
+    background: rgb(29, 29, 29);
+    border-radius: 6px;
+    border: 1px solid #000;
+    cursor: pointer;
+}
+
+.logout button:hover {
+    transform: scale(1.05);
+    background: rgb(40, 40, 40);
+    color: hsl(68, 100%, 57%);
+}
+#h5 {
+    margin-top: auto;
+    font-size: clamp(10px, 1vw, 14px);
+    text-align: center;
+    color: rgb(40, 40, 40);
+    flex-shrink: 0;
+}
+
+.content {
+    flex: 1;
+    padding: clamp(10px, 2vw, 20px);
+    overflow-y: auto;
+    background: rgb(29, 29, 29);
+}
+
+.card {
+    background: white;
+    font-weight: bold;
+    color: #000;
+
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+
+    border-left: 5px solid #b8b8b8;
+    position: relative;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+.card.approved {
+    background: hsl(68, 84%, 50%);
+    border-left: 5px solid hsl(68, 100%, 33%);
+}
+
+.card.rejected {
+    color: #fff;
+    background: rgb(49, 49, 49);
+    border-left: 5px solid #fff;
+}
+
+.btn-comment {
+    position: absolute;
+    right: 15px;
+    bottom: 8px;
+
+    font-family: Arial, sans-serif;
+    border: 2px solid rgb(49, 49, 49);
+
+    background: #fff;
+    color: rgb(29, 29, 29);
+
+    font-weight: bold;
+    width: 100px;
+    padding: 8px 0;
+
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-comment:hover {
+    transform: scale(1.05);
+}
+
+.comments-container {
+    margin-top: 15px;
+    padding: 10px;
+    border-top: 2px solid rgba(0, 0, 0, 0.24);
+}
+
+.comments-list {
+    margin-bottom: 32px;
+}
+
+.comment {
+    color: white;
+    width: 61.8%;
+
+    padding: 6px;
+    margin-bottom: 5px;
+
+    background: rgba(0, 0, 0, 0.24);
+    border-radius: 5px;
+
+    border-left: 3px solid #fff;
+    font-size: 14px;
+}
+
+.comment-input-box {
+    position: absolute;
+    bottom: 8px;
+    width: 60%;
+    display: flex;
+    gap: 10px;
+}
+
+.comment-input-box input {
+    flex: 1;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #999;
+}
+
+.comment-input-box button {
+    width: 100px;
+    padding: 8px 0;
+
+    font-family: Arial, sans-serif;
+    border: 2px solid rgb(49, 49, 49);
+
+    background: hsl(68, 84%, 50%);
+    color: #000;
+
+    font-weight: bold;
+    border-radius: 6px;
+
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.comment-input-box button:hover {
+    transform: scale(1.05);
+    background: hsl(68, 100%, 57%);
+    color: rgb(29, 29, 29);
+}
+
+.admin-comment {
+    color: #ffffff;
+    border-left: 4px solid #ff533c;
+    font-weight: bold;
+}

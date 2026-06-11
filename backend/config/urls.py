@@ -1,40 +1,31 @@
-"""
-URL configuration for config project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
-from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
+from ideas.views import csrf
 
-from ideas.views import home, create, set_status, CommentListCreateAPIView
+from ideas.views import (
+    IdeaListCreateAPIView,
+    SetStatusAPIView,
+    CommentListCreateAPIView,
+    api_login,
+    api_logout,
+    api_me,
+    csrf
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
 
-    # Web Pages
-    path('', home, name='home'),
-    path('create/', create, name='create'),
-    path('status/<int:idea_id>/<str:status_type>/', set_status, name='set_status'), # cambiato in status_type per evitare conflitti di nomi
+    path("", RedirectView.as_view(url="http://localhost:3000/", permanent=False)),
 
-    # Auth
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
-    # API REST (DRF)
-    # GET a questo url mostrerà i commenti, POST aggiungerà un commento
-    path("ideas/<int:idea_id>/comments/", CommentListCreateAPIView.as_view(), name="idea-comments"),
-    # Manteniamo il vecchio path POST per non rompere JS se fa chiamate esplicite a /add/
-    path("ideas/<int:idea_id>/comments/add/", CommentListCreateAPIView.as_view(), name="idea-comments-add"),
+    path("api/auth/login/", api_login),
+    path("api/auth/logout/", api_logout),
+    path("api/auth/me/", api_me),
+
+    path("api/ideas/", IdeaListCreateAPIView.as_view()),
+    path("api/auth/csrf/", csrf),
+    path("api/status/<int:idea_id>/<str:status_type>/", SetStatusAPIView.as_view()),
+
+    path("api/ideas/<int:idea_id>/comments/", CommentListCreateAPIView.as_view()),
 ]

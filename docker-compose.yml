@@ -14,13 +14,28 @@ services:
     networks:
       - app-net
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: nuxt.dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - django
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+    networks:
+      - app-net
+
   db:
     image: postgres:18.1
     restart: unless-stopped
-
     volumes:
-      - ./postgres_data:/var/lib/postgresql/18/docker
-
+      - ./postgres_data:/var/lib/postgresql
     env_file:
       - .env
     networks:

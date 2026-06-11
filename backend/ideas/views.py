@@ -1,84 +1,126 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.contrib.auth import authenticate, login, logout
+from django.utils.decorators import method_decorator
 
-# Import per DRF
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+import json
+
 from .models import Idea, Comment
-from .serializer import CommentSerializer
+from .serializer import CommentSerializer, IdeaSerializer
 
-@login_required
-def home(request):
-    ideas = Idea.objects.all().order_by('-created_at')
-    return render(request, 'home.html', {'ideas': ideas})
+@ensure_csrf_cookie
+def csrf(request):
+    return JsonResponse({"csrf": "ok"})
+    
+@ensure_csrf_cookie
+@csrf_exempt
+def api_me(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "unauthenticated"}, status=401)
+
+    return JsonResponse({
+        "username": request.user.username,
+        "is_superuser": request.user.is_superuser
+    })
 
 
-@login_required
-def create(request):
-    if request.method == "POST":
-        Idea.objects.create(
+@csrf_exempt
+def api_login(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "method not allowed"}, status=405)
+
+    data = json.loads(request.body.decode("utf-8") or "{}")
+
+    user = authenticate(
+        username=data.get("username"),
+        password=data.get("password")
+    )
+
+    if not user:
+        return JsonResponse({"error": "invalid credentials"}, status=401)
+
+    login(request, user)
+
+    return JsonResponse({"ok": True})
+
+
+@csrf_exempt
+def api_logout(request):
+    logout(request)
+    return JsonResponse({"ok": True})
+
+class IdeaListCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        ideas = Idea.objects.all().order_by('-created_at')
+        return Response(IdeaSerializer(ideas, many=True).data)
+
+    def post(self, request):
+        title = request.data.get("title")
+        description = request.data.get("description")
+
+        if not title or not description:
+            return Response({"error": "Missing fields"}, status=400)
+
+        idea = Idea.objects.create(
             user=request.user,
-            title=request.POST['title'],
-            description=request.POST['description']
+            title=title,
+            description=description
         )
-        return redirect('home')
-    return render(request, 'create.html')
 
+        return Response(IdeaSerializer(idea).data, status=201)
 
-def is_superuser(user):
-    return user.is_superuser
+class SetStatusAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request, idea_id, status_type):
+        idea = get_object_or_404(Idea, id=idea_id)
 
-@login_required
-@user_passes_test(is_superuser)
-def set_status(request, idea_id, status_type):
-    idea = get_object_or_404(Idea, id=idea_id)
+        if not request.user.is_superuser:
+            return Response({"error": "forbidden"}, status=403)
 
-    if status_type == "approved":
-        if idea.status == "approved":
-            idea.status = "pending"
-            idea.approved_at = None
-        else:
+        if status_type == "approved":
             idea.status = "approved"
             idea.approved_at = timezone.now()
-            idea.rejected_at = None
 
-    elif status_type == "rejected":
-        if idea.status == "rejected":
-            idea.status = "pending"
-            idea.rejected_at = None
-        else:
+        elif status_type == "rejected":
             idea.status = "rejected"
             idea.rejected_at = timezone.now()
-            idea.approved_at = None
 
-    idea.save()
-    return redirect('home')
+        idea.save()
+        return Response({"status": "ok"})
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CommentListCreateAPIView(APIView):
-    permission_classes = [IsAuthenticated] # Sostituisce @login_required
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, idea_id):
-        """Sostituisce get_comments"""
         idea = get_object_or_404(Idea, id=idea_id)
         comments = Comment.objects.filter(idea=idea).order_by("-created_at")
-        serializer = CommentSerializer(comments, many=True)
-        return Response(serializer.data)
+
+        return Response(CommentSerializer(comments, many=True).data)
 
     def post(self, request, idea_id):
-        """Sostituisce add_comment"""
         idea = get_object_or_404(Idea, id=idea_id)
-        
-        # Passiamo il contesto alla validazione del serializer
-        serializer = CommentSerializer(data=request.data, context={'request': request, 'view': self})
-        
+
+        serializer = CommentSerializer(
+            data=request.data,
+            context={"request": request, "view": self}
+        )
+
         if serializer.is_valid():
-            # Salviamo iniettando l'utente e l'idea correnti
             serializer.save(user=request.user, idea=idea)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=201)
+
+        return Response(serializer.errors, status=400)
+
+
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
