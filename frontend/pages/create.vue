@@ -34,7 +34,7 @@ async function submitIdea() {
 
   const csrfToken = getCookie('csrftoken')
 
-  await $fetch(`${config.public.apiBase}/api/ideas/`, {
+  await $fetch(`${config.public.apiBase}/ideas/`, {
     method: 'POST',
     credentials: 'include',
     headers: {

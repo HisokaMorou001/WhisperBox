@@ -14,9 +14,8 @@ from ideas.views import (
 )
 
 urlpatterns = [
+    path("", RedirectView.as_view(url='http://localhost/', permanent=False)),
     path("admin/", admin.site.urls),
-
-    path("", RedirectView.as_view(url="http://localhost:3000/", permanent=False)),
 
 
     path("api/auth/login/", api_login),

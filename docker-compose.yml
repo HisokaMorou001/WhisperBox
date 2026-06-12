@@ -5,6 +5,8 @@ services:
       dockerfile: django.dockerfile
     ports:
       - "8000:8000"
+    expose:
+      - "8000"
     volumes:
       - ./backend:/app/
     depends_on:
@@ -18,8 +20,8 @@ services:
     build:
       context: ./frontend
       dockerfile: nuxt.dockerfile
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -28,6 +30,18 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=3000
+    networks:
+      - app-net
+  
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: nginx.dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+      - frontend
     networks:
       - app-net
 

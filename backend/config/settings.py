@@ -144,7 +144,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost",
+    "http://localhost:8000",
 ]
 
 SESSION_COOKIE_HTTPONLY = True
@@ -155,7 +156,8 @@ CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SECURE = False
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost",
+    "http://localhost:8000",
 ]
 
 CORS_ALLOW_CREDENTIALS = True

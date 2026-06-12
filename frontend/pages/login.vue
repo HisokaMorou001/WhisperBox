@@ -48,7 +48,7 @@ async function login() {
 
   try {
     // 1. LOGIN (crea sessione Django)
-      await $fetch(`${config.public.apiBase}/api/auth/login/`, {
+      await $fetch(`${config.public.apiBase}/auth/login/`, {
       method: 'POST',
       credentials: 'include',
       body: {
@@ -58,7 +58,7 @@ async function login() {
     })
 
     // 2. FORZA SET COOKIE CSRF (IMPORTANTISSIMO per POST successivi)
-    await $fetch(`${config.public.apiBase}/api/auth/me/`, {
+    await $fetch(`${config.public.apiBase}/auth/me/`, {
       credentials: 'include'
     })
 

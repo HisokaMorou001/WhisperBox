@@ -67,3 +67,15 @@ form {
     margin-top: 10px;
     color: red;
 }
+@media (max-width: 600px) {
+  .login-box {
+    width: min(90vw, 340px);
+    height: auto;
+    padding: 24px;
+  }
+
+  .login-input,
+  .login-button {
+    width: 100%;
+  }
+}

@@ -71,7 +71,7 @@ const ideas = ref([])
 
 async function loadIdeas() {
   ideas.value = await $fetch(
-    `${config.public.apiBase}/api/ideas/`,
+    `${config.public.apiBase}/ideas/`,
     {
       credentials: 'include'
     }
@@ -104,7 +104,7 @@ function getCookie(name) {
 async function loadComments(ideaId) {
   try {
     const res = await $fetch(
-      `${config.public.apiBase}/api/ideas/${ideaId}/comments/`,
+      `${config.public.apiBase}/ideas/${ideaId}/comments/`,
       {
         credentials: 'include'
       }
@@ -123,7 +123,7 @@ async function addComment(ideaId, text) {
   const csrfToken = getCookie('csrftoken')
 
   await $fetch(
-    `${config.public.apiBase}/api/ideas/${ideaId}/comments/`,
+    `${config.public.apiBase}/ideas/${ideaId}/comments/`,
     {
       method: 'POST',
       credentials: 'include',

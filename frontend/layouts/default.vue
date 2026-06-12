@@ -1,8 +1,14 @@
 <template>
   <div v-if="!ready" class="loading-screen"></div>
 
-  <div v-else class="layout">
-    <div class="sidebar">
+  <div v-else class="layout" :class="{ 'sidebar-open': sidebarOpen }">
+    <div class="drawer-overlay" v-if="sidebarOpen" @click="closeSidebar"></div>
+
+    <div class="sidebar" :class="{ open: sidebarOpen }">
+      <button class="sidebar-toggle" @click="toggleSidebar" aria-label="Menu">
+        {{ sidebarOpen ? 'CLOSE' : 'MENU' }}
+      </button>
+
       <h2>Whisper Box</h2>
 
       <div v-if="user" class="user">
@@ -12,17 +18,18 @@
         </div>
 
         <div class="menu">
-          <NuxtLink to="/">FORUM</NuxtLink>
+          <NuxtLink to="/" @click="closeSidebar">FORUM</NuxtLink>
 
           <a
             v-if="user.is_superuser"
             href="http://localhost:8000/admin/"
             target="_blank"
+            @click="closeSidebar"
           >
             ADMIN DJANGO
           </a>
 
-          <NuxtLink v-else to="/create">
+          <NuxtLink v-else to="/create" @click="closeSidebar">
             NEW REQUEST
           </NuxtLink>
 
@@ -46,29 +53,49 @@
 <script setup>
 const user = ref(null)
 const ready = ref(false)
+const route = useRoute()
+const sidebarOpen = ref(false)
 
 const config = useRuntimeConfig()
 
+function toggleSidebar() {
+  sidebarOpen.value = !sidebarOpen.value
+}
+
+function closeSidebar() {
+  sidebarOpen.value = false
+}
+
 async function fetchUser() {
   try {
-    user.value = await $fetch(`${config.public.apiBase}/api/auth/me/`, {
+    const res = await $fetch('/api/auth/me/', {
       credentials: 'include'
     })
-  } catch {
+    user.value = res
+  } catch (e) {
     user.value = null
   } finally {
     ready.value = true
+
+    if (!user.value && route.path !== '/login') {
+      await navigateTo('/login')
+    }
+
+    if (user.value && route.path === '/login') {
+      await navigateTo('/')
+    }
   }
 }
 
 async function logout() {
   try {
-    await $fetch(`${config.public.apiBase}/api/auth/logout/`, {
+    await $fetch(`${config.public.apiBase}/auth/logout/`, {
       method: 'POST',
       credentials: 'include'
     })
   } finally {
     user.value = null
+    closeSidebar()
     await navigateTo('/login')
   }
 }
