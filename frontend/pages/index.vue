@@ -78,7 +78,7 @@ async function loadIdeas() {
   )
 }
 
-await loadIdeas()
+onMounted(loadIdeas)
 
 const openComments = ref({})
 const comments = ref({})

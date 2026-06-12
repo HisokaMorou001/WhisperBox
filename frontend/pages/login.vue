@@ -48,7 +48,7 @@ async function login() {
 
   try {
     // 1. LOGIN (crea sessione Django)
-    await $fetch(`${config.public.apiBase}/api/auth/login/`, {
+      await $fetch(`${config.public.apiBase}/api/auth/login/`, {
       method: 'POST',
       credentials: 'include',
       body: {

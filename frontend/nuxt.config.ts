@@ -9,7 +9,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-          baseURL: 'http://django:8000/',
+      apiBase: 'http://localhost:8000',
     }
   }
 })
